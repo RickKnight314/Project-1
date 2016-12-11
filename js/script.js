@@ -68,8 +68,9 @@ function printQuote() {
     document.getElementById('quote-box').innerHTML = output;  // update the quote-box element's inner HTML with the "output" contents
     applyColor();                                             // call (execute) the applyColor function at the same time as printQuote is executed (see applyColor definition below)
     restartTimer();                                           // call restartTimer so that the quote will refresh automatically after predefined seconds
-}
-
+    cancelInitialTimer();                                     // cancel the initial timer if first refresh was done by button click
+    }
+    
 var colors = ["#e81919", "#4ca64c", "#3232d6", "red", "blue", "purple"];           // create array of colors to be used as rotating body background colors
 
 function randomColor() {                                      // define function for randomly choosing one of the background colors
@@ -94,7 +95,18 @@ function restartTimerWithClick () {         // define function to clear the alre
     clearTimeout(timer);
 }
 
-setTimeout(printQuote, 8000);  // set one-time initial 8-second timer
+var initialTimer;
+function initialTimer() {
+    initialTimer = setTimeout(printQuote, 8000);
+}
+
+initialTimer();
+
+function cancelInitialTimer() {
+    clearTimeout(initialTimer);
+}
+
+//setTimeout(printQuote, 8000);  // set one-time initial 8-second timer
 
 document.getElementById('loadQuote').addEventListener("click", restartTimerWithClick, false);   // cancel the already pending refresh timer
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);  // add event listener to respond to "Show another quote" button clicks
